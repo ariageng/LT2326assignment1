@@ -56,7 +56,7 @@ class OCRrecognizer(nn.Module):
         self.conv1 = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1)
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1)
         self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = nn.Linear(64 * 32 * 32, 128)  # 64 channels with 16x16 image after pooling
+        self.fc1 = nn.Linear(64 * 32 * 32, 128)  # 64 channels with 32x32 image after pooling
         self.fc2 = nn.Linear(128, num_classes)
         self.relu = nn.ReLU()
 
@@ -76,7 +76,7 @@ def train_model(model, train_loader, valid_loader, criterion, optimizer, num_epo
         model.train()
         running_loss = 0.0
         for images, labels in train_loader:
-            print(f"Batch images shape: {images.shape}, Batch labels shape: {labels.shape}")
+            # print(f"Batch images shape: {images.shape}, Batch labels shape: {labels.shape}")
             images, labels = images.to(device), labels.to(device)
 
             # Zero the parameter gradients
@@ -84,12 +84,12 @@ def train_model(model, train_loader, valid_loader, criterion, optimizer, num_epo
 
             # Forward pass
             outputs = model(images)
-            print(f'Outputs shape: {outputs.shape}, Labels shape: {labels.shape}')
+            # print(f'Outputs shape: {outputs.shape}, Labels shape: {labels.shape}')
 
             # Check for size mismatch
-            if outputs.size(0) != labels.size(0):
-                print(f'Output size: {outputs.size(0)}, Label size: {labels.size(0)}')
-                continue  # Skip this iteration
+            # if outputs.size(0) != labels.size(0):
+            #     print(f'Output size: {outputs.size(0)}, Label size: {labels.size(0)}')
+            #     continue  # Skip this iteration
 
             loss = criterion(outputs, labels)
 
@@ -122,13 +122,13 @@ def validate_model(model, valid_loader, criterion, device):
 
 def main():
     parser = argparse.ArgumentParser(description="Train OCR Model on Thai/English Characters")
-    parser.add_argument('--train-file', type=str, required=True, help="Path to train.txt")
-    parser.add_argument('--valid-file', type=str, help="Path to valid.txt (optional)")
+    parser.add_argument('--train-file', type=str, required=True, help="Path of the train.txt file")
+    parser.add_argument('--valid-file', type=str, help="Path of the valid.txt file (optional)")
     parser.add_argument('--batch-size', type=int, default=32, help="Batch size for training")
-    parser.add_argument('--epochs', type=int, default=10, help="Number of epochs to train")
+    parser.add_argument('--epochs', type=int, default=10, help="Number of epochs")
     parser.add_argument('--lr', type=float, default=0.001, help="Learning rate")
     parser.add_argument('--output-model', type=str, required=True, help="Path to save the trained model")
-    parser.add_argument('--device', type=str, default="cuda", help="Device to use for training (e.g., cuda or cpu)")
+    parser.add_argument('--device', type=str, default="cuda", help="Device to use for training (cuda or cpu)")
 
     args = parser.parse_args()
 
