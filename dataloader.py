@@ -21,12 +21,17 @@ def get_files(language, dpi, style):
         language_dir_paths.append(os.path.join(Dataset_Path, "English"))
     
     if dpi == "all":
-        DPI_list.append("200","300","400")
+        DPI_list.append("200")
+        DPI_list.append("300")
+        DPI_list.append("400")
     else:
         DPI_list.append(dpi)
 
     if style == "all":
-        style_list.append("bold","bold_italic","italic","normal")
+        style_list.append("bold")
+        style_list.append("bold_italic")
+        style_list.append("italic")
+        style_list.append("normal")
     else:
         style_list.append(style)
 
